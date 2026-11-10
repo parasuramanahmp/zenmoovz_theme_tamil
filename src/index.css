@@ -1,0 +1,112 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root { font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; color: #0A0A0A; background: #F3F1EC; font-synthesis: none; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; font-feature-settings: "cv11", "ss03"; }
+  /* Headlines: condensed, uppercase, athletic. Everything else is Inter. */
+  h1, h2, .font-display { font-family: "Barlow Condensed", "Arial Narrow", Arial, sans-serif; text-transform: uppercase; letter-spacing: .01em !important; line-height: .96; }
+  h1, h2 { font-weight: 700 !important; }
+  h3 { font-family: Inter, sans-serif; }
+  * { box-sizing: border-box; }
+  body { margin: 0; min-width: 320px; }
+  button, input, select { font: inherit; }
+  button, a { -webkit-tap-highlight-color: transparent; }
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: #0A0A0A; color: #fff; }
+  :focus-visible { outline: 2px solid #0A0A0A; outline-offset: 2px; }
+}
+
+.noise { display: none; }
+.lime-text { color: #B4532A; }
+.section-wrap { width: min(1240px, calc(100% - 32px)); margin-inline: auto; }
+@media (min-width: 640px) { .section-wrap { width: min(1240px, calc(100% - 48px)); } }
+.product-image { transition: transform .6s cubic-bezier(.2,.8,.2,1); }
+.product-card:hover .product-image { transform: scale(1.06); }
+.marquee-track { animation: marquee 40s linear infinite; will-change: transform; backface-visibility: hidden; }
+@keyframes marquee { to { transform: translateX(-50%); } }
+/* Brand logo strip: soft edge fade, pause on hover / keyboard focus, static scrollable row for reduced motion */
+.logo-marquee { -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent); mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent); }
+.logo-marquee:hover .marquee-track, .logo-marquee:focus-within .marquee-track { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .logo-marquee { overflow-x: auto; -webkit-mask-image: none; mask-image: none; }
+  .logo-marquee .marquee-track { animation: none !important; transform: none; }
+  .logo-marquee-dup { display: none; }
+}
+.line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.btn-nudge svg:last-child { transition: transform .3s cubic-bezier(.22,1,.36,1); }
+.btn-nudge:hover svg:last-child { transform: translate(3px, -3px); }
+
+/* Outlet rack items are SVG groups: give them a keyboard focus ring */
+.rack-hit { outline: none; cursor: pointer; }
+.rack-hit .rack-ring { fill: none; stroke: transparent; stroke-width: 3; }
+.rack-hit:focus-visible .rack-ring { stroke: #E9B99B; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
+}
+
+@keyframes heroFill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+/* Anatomy hotspot dots */
+@keyframes hsPulse { 0% { transform: scale(.7); opacity: .9; } 100% { transform: scale(1.9); opacity: 0; } }
+.hs-ring { animation: hsPulse 2.4s ease-out infinite; }
+.hs-ring.hs-on { animation: none; transform: scale(1.35); border-color: #fff; opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .hs-ring { animation: none; } }
+
+/* Hero image columns: endless drifting tiles (content is rendered twice, so -50% loops seamlessly) */
+.col-up { animation: colMove 46s linear infinite; will-change: transform; backface-visibility: hidden; }
+.col-down { animation: colMove 52s linear infinite reverse; will-change: transform; backface-visibility: hidden; }
+.row-left { animation: rowMove 44s linear infinite; will-change: transform; backface-visibility: hidden; }
+@keyframes colMove { to { transform: translateY(-50%); } }
+@keyframes rowMove { to { transform: translateX(-50%); } }
+.media-pause:hover .col-up, .media-pause:hover .col-down, .media-pause:hover .row-left { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) { .col-up, .col-down, .row-left { animation: none !important; } }
+
+/* Feature viewer: the auto-tour timer under the open part */
+@keyframes gearTour { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+/* Location pin: soft pulse ring */
+@keyframes pinRing { 0% { transform: scale(.5); opacity: .55; } 100% { transform: scale(2.1); opacity: 0; } }
+
+/* Cricket kit bag: pulsing hint ring on the zip pull and a slow sway of the leather tab */
+@keyframes kbRing { 0% { transform: scale(.5); opacity: .7; } 100% { transform: scale(2.3); opacity: 0; } }
+@keyframes kbSway { 0%, 100% { transform: rotate(-2.5deg); } 50% { transform: rotate(2.5deg); } }
+.kb-ring { transform-box: fill-box; transform-origin: center; animation: kbRing 2.2s ease-out infinite; }
+.kb-pull { transform-origin: 0 124px; animation: kbSway 3.4s ease-in-out infinite; }
+.kb-lift { transition: transform .5s cubic-bezier(.22,1,.36,1); }
+.kb-hover:hover .kb-lift, .kb-hover:focus-visible .kb-lift { transform: translateY(-4px); }
+@media (prefers-reduced-motion: reduce) { .kb-ring, .kb-pull { animation: none; } }
+
+/* Cricket kit cards: silver-blue brushed metal with a light that sweeps across, staggered per card (--i) */
+.kc-card {
+  position: relative; isolation: isolate;
+  background:
+    repeating-linear-gradient(90deg, rgba(255,255,255,.09) 0 1px, transparent 1px 3px),
+    radial-gradient(130% 70% at 0% 0%, rgba(255,255,255,.95), transparent 55%),
+    linear-gradient(152deg, #EEF4FA 0%, #CBDAE9 36%, #A8BED4 62%, #DDE8F3 100%);
+  border: 1px solid rgba(255,255,255,.85);
+  box-shadow: 0 0 0 1px rgba(118,153,190,.55), 0 26px 50px -24px rgba(0,0,0,.85), 0 0 34px -8px rgba(125,180,245,.45), inset 0 1px 0 rgba(255,255,255,.95);
+}
+.kc-card::after {
+  content: ''; position: absolute; inset: -20% 0; z-index: 3; pointer-events: none;
+  background: linear-gradient(105deg, transparent 38%, rgba(255,255,255,.18) 44%, rgba(255,255,255,.7) 50%, rgba(255,255,255,.18) 56%, transparent 62%);
+  transform: translateX(-130%) skewX(-8deg);
+  animation: kcShine 6.5s cubic-bezier(.4,0,.2,1) infinite; animation-delay: calc(var(--i, 0) * .55s);
+}
+@keyframes kcShine { 0%, 52% { transform: translateX(-130%) skewX(-8deg); } 100% { transform: translateX(130%) skewX(-8deg); } }
+@media (prefers-reduced-motion: reduce) { .kc-card::after { animation: none; transform: translateX(-30%) skewX(-8deg); opacity: .5; } }
+
+/* Home feature viewer: fade/rise in when switching sport. CSS only, so the content is always visible even if JS animation does not run */
+@keyframes featFade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+.feat-fade { animation: featFade .45s cubic-bezier(.22,1,.36,1) both; }
+
+/* Print / Save as PDF on the order summary: only the summary prints, without buttons */
+@media print {
+  body * { visibility: hidden !important; }
+  #order-print, #order-print * { visibility: visible !important; }
+  #order-print { position: absolute; left: 0; top: 0; width: 100%; }
+  .no-print { display: none !important; }
+}
